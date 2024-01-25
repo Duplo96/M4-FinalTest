@@ -1,63 +1,59 @@
-const productApi = "https://striveschool-api.herokuapp.com/api/product/";
-let products;
-const key =
+const API_ENDPOINT = "https://striveschool-api.herokuapp.com/api/product/";
+const API_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWIxNzFlNjkxM2Y2NTAwMThkMDkyN2IiLCJpYXQiOjE3MDYxMzM2NDMsImV4cCI6MTcwNzM0MzI0M30.zk_C74s1SwQP9wyIK_4xgeCdmbTfavSb-0ppG9A8P5g";
+
 const objHttpsGet = {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${key}`,
+    Authorization: `Bearer ${API_KEY}`,
   },
 };
+
+const handleErrors = (error) => {
+  console.error(error);
+};
+
 const fetchData = async () => {
   try {
-    const response = await fetch(productApi, objHttpsGet);
-    products = await response.json();
+    const response = await fetch(API_ENDPOINT, objHttpsGet);
+    const products = await response.json();
     console.log(products);
-    products.map((product) => {
-      const container = document.querySelector(".container");
-      container.innerHTML += `
-        <div class="card" id=${product.id}>
-        <img src="${product.imageUrl}" class="card-img-top" alt="" />
-        <div class="card-body">
-          <h5 class="card-title">${product.name}</h5>
-          <p id="brands" class="card-text">${product.brand}</p>
-          <p id="descriptions" class="card-text">${product.description}</p>
-          <p id="prices" class="card-text">${product.price}</p>
-          <a href="#" class="btn btn-primary">button</a>
-          </div>`;
-    });
+    return products;
   } catch (error) {
-    console.error(error);
+    handleErrors(error);
   }
 };
-const postData = async (prodotto) => {
+
+const postData = async (product) => {
   try {
-    await fetch(productApi, {
+    await fetch(API_ENDPOINT, {
       method: "POST",
-      body: JSON.stringify(prodotto),
+      body: JSON.stringify(product),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${API_KEY}`,
       },
     });
-    console.log("ciao");
+    console.log("Dati inviati con successo.");
   } catch (error) {
-    console.error(error);
+    handleErrors(error);
   }
 };
+
 const deleteData = async (productId) => {
   try {
-    await fetch(`${productApi}/${productId}`, {
+    await fetch(`${API_ENDPOINT}/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${API_KEY}`,
       },
     });
+
     console.log(`Prodotto con ID ${productId} eliminato con successo.`);
   } catch (error) {
-    console.error(error);
+    handleErrors(error);
   }
 };
 
