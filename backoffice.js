@@ -1,4 +1,3 @@
-// index.js
 import { fetchData } from "./fetch.js";
 import {
   createList,
