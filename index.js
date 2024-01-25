@@ -1,58 +1,36 @@
-function simulaRichiestaPostBarbie(barbieArray) {
-  // Simulazione della richiesta POST
-  console.log("Simulazione: Invio dati al server...");
+import { fetchData, postData, deleteData } from "./fetch.js";
 
-  // Supponiamo che qui tu voglia eseguire la richiesta effettiva usando fetch o axios
-  // Ad esempio con fetch:
-  // fetch('url_del_tuo_server', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(barbieArray),
-  // })
-  // .then(response => response.json())
-  // .then(data => console.log('Risposta dal server:', data))
-  // .catch(error => console.error('Errore durante la richiesta:', error));
+document.addEventListener("DOMContentLoaded", () => {
+  const title = document.getElementById("title");
+  const description = document.getElementById("content");
+  const brand = document.getElementById("brand");
+  const img = document.getElementById("img");
+  const price = document.getElementById("price");
+  const button = document.getElementById("button");
+  const buttonGet = document.querySelector(".button-get");
+  const buttonDel = document.querySelector(".button-delete");
 
-  // Questo è solo un esempio, nella realtà dovresti effettuare una richiesta HTTP effettiva.
+  button.addEventListener("click", async (event) => {
+    event.preventDefault();
 
-  console.log("Simulazione: Dati inviati con successo!");
-}
+    const prodotto = {
+      name: title.value,
+      description: description.value,
+      brand: brand.value,
+      imageUrl: img.value,
+      price: price.value,
+    };
 
-// Esempio di utilizzo
-const arrayBarbie = [
-  { nome: "Barbie 1", coloreCapelli: "biondo", abito: "vestito rosa" },
-  { nome: "Barbie 2", coloreCapelli: "castano", abito: "vestito blu" },
-  // Aggiungi altri oggetti Barbie secondo le tue esigenze
-];
+    postData(prodotto);
+  });
 
-simulaRichiestaPostBarbie(arrayBarbie);
-
-function simulaRichiestaGetBarbie() {
-  // Simulazione della richiesta GET
-  console.log("Simulazione: Recupero dati dal server...");
-
-  // Supponiamo che tu voglia ottenere i dati dal server effettivo usando fetch o axios
-  // Ad esempio con fetch:
-  // fetch('url_del_tuo_server')
-  // .then(response => response.json())
-  // .then(data => console.log('Dati ottenuti dal server:', data))
-  // .catch(error => console.error('Errore durante la richiesta:', error));
-
-  // Questo è solo un esempio, nella realtà dovresti effettuare una richiesta HTTP effettiva.
-
-  // Simulazione di dati di risposta dal server
-  const datiDiRisposta = [
-    { nome: "Barbie 1", coloreCapelli: "biondo", abito: "vestito rosa" },
-    { nome: "Barbie 2", coloreCapelli: "castano", abito: "vestito blu" },
-    // Aggiungi altri oggetti Barbie secondo le tue esigenze
-  ];
-
-  console.log("Simulazione: Dati ottenuti dal server:", datiDiRisposta);
-  return datiDiRisposta;
-}
-
-// Esempio di utilizzo
-const datiBarbieRecuperati = simulaRichiestaGetBarbie();
-// Ora puoi utilizzare i datiBarbieRecuperati come necessario nella tua applicazione
+  buttonGet.addEventListener("click", async (event) => {
+    event.preventDefault();
+    fetchData();
+  });
+  buttonDel.addEventListener("click", async (event) => {
+    event.preventDefault();
+    deleteData();
+  });
+  fetchData();
+});
