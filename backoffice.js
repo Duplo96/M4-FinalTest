@@ -3,10 +3,21 @@ import { fetchData } from "./fetch.js";
 import {
   createList,
   createForm,
+  createModal,
   functionPost,
   functionDel,
   functionPut,
 } from "./components-back.js";
+const API_ENDPOINT = "https://striveschool-api.herokuapp.com/api/product/";
+const API_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWIxNzFlNjkxM2Y2NTAwMThkMDkyN2IiLCJpYXQiOjE3MDYxMzM2NDMsImV4cCI6MTcwNzM0MzI0M30.zk_C74s1SwQP9wyIK_4xgeCdmbTfavSb-0ppG9A8P5g";
+const objHttpsGet = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${API_KEY}`,
+  },
+};
 document.addEventListener("DOMContentLoaded", async function () {
   const containerForm = document.querySelector(".container-form");
   containerForm.innerHTML = createForm();
@@ -15,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const container = document.querySelector(".container");
   const row = document.createElement("div");
   const products = await fetchData();
+
   row.className = "row";
   container.append(row);
   products
@@ -38,9 +50,46 @@ document.addEventListener("DOMContentLoaded", async function () {
       await functionDel(event);
     });
   });
-});
+  const putBtns = document.querySelectorAll(".button-put");
+  putBtns.forEach((putbtn) => {
+    putbtn.addEventListener("click", async (event) => {
+      const id = event.target.closest(".card").id;
+      let fetchDataId = async () => {
+        try {
+          const response = await fetch(API_ENDPOINT + id, objHttpsGet);
+          const products = await response.json();
+          return products;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      const productToEdit = await fetchDataId();
+      console.log(productToEdit);
+      console.log(productToEdit.name);
+      const inputTitle = document.querySelector("#input_name");
+      const inputBrand = document.querySelector("#input_brand");
+      const inputDescripition = document.querySelector("#input_desc");
+      const inputImg = document.querySelector("#input_img");
+      const inputPrice = document.querySelector("#input_price");
+      inputTitle.value = productToEdit.name;
+      inputBrand.value = productToEdit.brand;
+      inputDescripition.value = productToEdit.description;
+      inputImg.value = productToEdit.name;
+      inputPrice.value = productToEdit.price;
+    });
+  });
+  const modal = createModal({
+    name: "",
+    brand: "",
+    description: "",
+    imageUrl: "",
+    price: "",
+  });
 
-const buttonPut = document.querySelector(".put-button");
-buttonPut.addEventListener("click", async (event) => {
-  await functionPut();
+  const containerModal = document.querySelector(".container-modal");
+  containerModal.innerHTML = modal;
+  const buttonPut = document.querySelector(".put-button");
+  buttonPut.addEventListener("click", async (event) => {
+    await functionPut();
+  });
 });
