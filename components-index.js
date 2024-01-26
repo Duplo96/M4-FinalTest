@@ -6,7 +6,7 @@ export const createCard = (product) => {
   <h5 class="card-title text-capitalize">${product.name}</h5>
   <p id="brands" class="card-text text-capitalize">${product.brand}</p>
   <p id="descriptions" class="card-text text-capitalize">${product.description}</p>
-  <p id="prices" class="card-text text-capitalize">${product.price}</p>
+  <p id="prices" class="card-text text-capitalize">${product.price}€</p>
   <a href="./detail.html?id=${product._id}" class="btn btn-primary">button</a>
   </div>`;
 };

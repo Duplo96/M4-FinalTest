@@ -1,12 +1,6 @@
 import { fetchData } from "./fetch.js";
-import {
-  createList,
-  createForm,
-  createModal,
-  functionPost,
-  functionDel,
-  functionPut,
-} from "./components-back.js";
+import { createList, createForm, createModal } from "./components-back.js";
+import { functionPost, functionDel, getData } from "./function-backoffice.js";
 const API_ENDPOINT = "https://striveschool-api.herokuapp.com/api/product/";
 const API_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWIxNzFlNjkxM2Y2NTAwMThkMDkyN2IiLCJpYXQiOjE3MDYxMzM2NDMsImV4cCI6MTcwNzM0MzI0M30.zk_C74s1SwQP9wyIK_4xgeCdmbTfavSb-0ppG9A8P5g";
@@ -63,32 +57,55 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       };
       const productToEdit = await fetchDataId();
+      await getData(productToEdit);
       console.log(productToEdit);
       console.log(productToEdit.name);
-      const inputTitle = document.querySelector("#input_name");
-      const inputBrand = document.querySelector("#input_brand");
-      const inputDescripition = document.querySelector("#input_desc");
-      const inputImg = document.querySelector("#input_img");
-      const inputPrice = document.querySelector("#input_price");
-      inputTitle.value = productToEdit.name;
-      inputBrand.value = productToEdit.brand;
-      inputDescripition.value = productToEdit.description;
-      inputImg.value = productToEdit.name;
-      inputPrice.value = productToEdit.price;
-    });
-  });
-  const modal = createModal({
-    name: "",
-    brand: "",
-    description: "",
-    imageUrl: "",
-    price: "",
-  });
+      const saveBtn = document.querySelector(".save-button");
+      saveBtn.addEventListener("click", async () => {
+        const inputTitle = document.querySelector("#input_name");
+        const inputBrand = document.querySelector("#input_brand");
+        const inputDescripition = document.querySelector("#input_desc");
+        const inputImg = document.querySelector("#input_img");
+        const inputPrice = document.querySelector("#input_price");
+        const updatedProduct = {
+          name: inputTitle.value,
+          brand: inputBrand.value,
+          description: inputDescripition.value,
+          imageUrl: inputImg.value,
+          price: inputPrice.value,
+        };
 
-  const containerModal = document.querySelector(".container-modal");
-  containerModal.innerHTML = modal;
-  const buttonPut = document.querySelector(".put-button");
-  buttonPut.addEventListener("click", async (event) => {
-    await functionPut();
+        try {
+          const response = await fetch(API_ENDPOINT + id, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${API_KEY}`,
+            },
+            body: JSON.stringify(updatedProduct),
+          });
+          if (response.ok) {
+            alert("Product updated successfully.");
+            window.location.reload();
+          } else {
+            alert("Error updating the product.");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    });
+    const modal = createModal({
+      name: "",
+      brand: "",
+      description: "",
+      imageUrl: "",
+      price: "",
+    });
+
+    const containerModal = document.querySelector(".container-modal");
+    containerModal.innerHTML = modal;
+    const saveBtn = document.querySelector(".save-button");
+    saveBtn.addEventListener("click", async () => {});
   });
 });

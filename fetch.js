@@ -2,7 +2,7 @@ const API_ENDPOINT = "https://striveschool-api.herokuapp.com/api/product/";
 const API_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWIxNzFlNjkxM2Y2NTAwMThkMDkyN2IiLCJpYXQiOjE3MDYxMzM2NDMsImV4cCI6MTcwNzM0MzI0M30.zk_C74s1SwQP9wyIK_4xgeCdmbTfavSb-0ppG9A8P5g";
 
-const objHttpsGet = {
+const objHttps = {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -16,12 +16,13 @@ const handleErrors = (error) => {
 
 const fetchData = async () => {
   try {
-    const response = await fetch(API_ENDPOINT, objHttpsGet);
+    const response = await fetch(API_ENDPOINT, objHttps);
     const products = await response.json();
     console.log(products);
     return products;
   } catch (error) {
     handleErrors(error);
+    throw error;
   }
 };
 
@@ -35,9 +36,10 @@ const postData = async (product) => {
         Authorization: `Bearer ${API_KEY}`,
       },
     });
-    console.log("Dati inviati con successo.");
+    console.log("Data sent successfully.");
   } catch (error) {
     handleErrors(error);
+    throw error;
   }
 };
 
@@ -51,9 +53,10 @@ const deleteData = async (productId) => {
       },
     });
 
-    console.log(`Prodotto con ID ${productId} eliminato con successo.`);
+    console.log(`Product with ID ${productId} deleted successfully.`);
   } catch (error) {
     handleErrors(error);
+    throw error;
   }
 };
 
