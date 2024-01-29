@@ -7,6 +7,6 @@ export const createCard = (product) => {
   <p id="brands" class="card-text text-capitalize">${product.brand}</p>
   <p id="descriptions" class="card-text text-capitalize">${product.description}</p>
   <p id="prices" class="card-text text-capitalize">${product.price}€</p>
-  <a href="./detail.html?id=${product._id}" class="btn btn-primary">button</a>
+  <a href="./detail.html?id=${product._id}" class="btn btn-primary">Details</a>
   </div>`;
 };
